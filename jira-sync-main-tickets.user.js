@@ -1,10 +1,10 @@
 // ==UserScript==
 // @namespace    https://openuserjs.org/users/floodmeadows
-// @name         Find out-of-sync main Jira tickets
-// @description  try to take over the world!
+// @name         Jira main ticket sync
+// @description  Find out-of-sync main Jira tickets and make it easy to work out where they should go
 // @copyright    2021, floodmeadows (https://openuserjs.org/users/floodmeadows)
 // @license      MIT
-// @version      0.1.0
+// @version      0.1.1
 // @include      https://jira.tools.tax.service.gov.uk/secure/RapidBoard.jspa?rapidView=3310*
 // @grant        none
 // ==/UserScript==
