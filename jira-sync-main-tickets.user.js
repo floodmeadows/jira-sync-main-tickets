@@ -4,7 +4,7 @@
 // @description  Find out-of-sync main Jira tickets and make it easy to work out where they should go
 // @copyright    2021, floodmeadows (https://openuserjs.org/users/floodmeadows)
 // @license      MIT
-// @version      0.1.2
+// @version      0.2.0
 // @include      https://jira.tools.tax.service.gov.uk/secure/RapidBoard.jspa?rapidView=3310*
 // @grant        none
 // ==/UserScript==
@@ -26,8 +26,8 @@
         redirect: 'follow'
     };
 
-    fetch("https://jira.tools.tax.service.gov.uk/rest/api/latest/search?jql=project%20=%20%22HMRC%20Mobile%20App%22%20AND%20type%20not%20in%20(Project)%20AND%20status%20in%20(%22Ready%20for%20Dev%22,%20Blocked,%20%22In%20Dev%22,%20%22In%20PR%22,%20%22Ready%20for%20Test%22,%20%22In%20Test%22,%20%22Ready%20for%20Release%22)%20AND%20labels%20=%20main%20order%20by%20key&fields=key,summary,subtasks", requestOptions)
-        .then(response => json.parse(response.text()))
+    fetch("https://jira.tools.tax.service.gov.uk/rest/api/latest/search?jql=project%20=%20%22HMRC%20Mobile%20App%22%20AND%20type%20not%20in%20(Project)%20AND%20status%20in%20(%22Ready%20for%20Dev%22,%20Blocked,%20%22In%20Dev%22,%20%22In%20PR%22,%20%22Ready%20for%20Test%22,%20%22In%20Test%22,%20%22Ready%20for%20Release%22)%20AND%20labels%20=%20main%20order%20by%20key&fields=key,summary,subtasks,status", requestOptions)
+        .then(response => response.json())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
 })();
