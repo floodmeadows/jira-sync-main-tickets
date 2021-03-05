@@ -1,4 +1,3 @@
-
 // ==UserScript==
 // @namespace    https://openuserjs.org/users/floodmeadows
 // @name         Jira sync main tickets
