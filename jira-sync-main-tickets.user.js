@@ -10,7 +10,7 @@
 // ==/UserScript==
 
 // ==OpenUserJS==
-// @authors       floodmeadows, chrisob55
+// @authors       floodmeadows
 // ==/OpenUserJS==
 
 (function () {
