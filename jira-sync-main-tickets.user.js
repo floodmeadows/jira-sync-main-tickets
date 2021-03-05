@@ -25,12 +25,18 @@ function checkStatuses() {
     headers.append("Authorization", "Basic YW5keS52YXVnaGFuOnY2OFZwV0BhOWVCMQ==");
     headers.append("Cookie", "JSESSIONID=327B1D9832748F6B0918A869EEE63342; atlassian.xsrf.token=BBUF-FXW5-CMMJ-CU1I_09e04099e52aabd2b1b65538cd270f56650b2fc9_lin");
 
+    const baseUrl = 'https://jira.tools.tax.service.gov.uk/rest/api/latest/search'
+    const jql = 'project = "HMRC Mobile App" AND type not in (Project) AND status in ("Ready for Dev", Blocked, "In Dev", "In PR", "Ready for Test", "In Test", "Ready for Release") AND labels = main AND labels != "do-not-sync" order by key'
+    const fields = 'key,summary,subtasks,status'
+    const url = baseUrl + '?jql=' + encodeURI(jql) + '&fields=' + fields
+    console.log(url)
+
     var requestOptions = {
         method: 'GET',
         headers: headers
     };
 
-    fetch("https://jira.tools.tax.service.gov.uk/rest/api/latest/search?jql=project%20=%20%22HMRC%20Mobile%20App%22%20AND%20type%20not%20in%20(Project)%20AND%20status%20in%20(%22Ready%20for%20Dev%22,%20Blocked,%20%22In%20Dev%22,%20%22In%20PR%22,%20%22Ready%20for%20Test%22,%20%22In%20Test%22,%20%22Ready%20for%20Release%22)%20AND%20labels%20=%20main%20order%20by%20key&fields=key,summary,subtasks,status", requestOptions)
+    fetch(url, requestOptions)
         .then(response => response.json())
         .then(
             json => {
@@ -53,7 +59,7 @@ function checkStatuses() {
                         console.log(main.key + ' is has the correct status')
                     }
                 }
-                console.log("I found issues with the following tickets: " + oddballs)
+                if (oddballs.length > 0) console.log("I found issues with the following tickets: " + oddballs)
             }
         )
         .catch(error => console.log('error', error));
