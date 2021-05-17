@@ -48,14 +48,19 @@ function checkStatuses() {
                         const subtaskStatus = convertStatus(subtask.fields.status.name)
                         subtaskStatuses.push(subtaskStatus)
                     }
-                    const min = Math.min(...subtaskStatuses)
-                    if (mainTicketStatus != min) {
-                        const targetStatus = convertStatusInt(min)
-                        if (targetStatus == '') oddballs.push(main.key)
-                        console.log(main.key + ' needs to be moved to ' + targetStatus)
-                        updateStatus(main.key, targetStatus)
+                    if (subtaskStatuses.length == 0) {
+                        oddballs.push(main.key)
+                        console.log(main.key + ' is labelled "main" but has no sub-tasks')
                     } else {
-                        console.log(main.key + ' is has the correct status')
+                        const min = Math.min(...subtaskStatuses)
+                        if (mainTicketStatus != min) {
+                            const targetStatus = convertStatusInt(min)
+                            if (targetStatus == '') oddballs.push(main.key)
+                            console.log(main.key + ' needs to be moved to ' + targetStatus)
+                            updateStatus(main.key, targetStatus)
+                        } else {
+                            console.log(main.key + ' is has the correct status')
+                        }
                     }
                 }
                 if (oddballs.length > 0) console.log("I found issues with the following tickets: " + oddballs)
@@ -105,6 +110,7 @@ function convertStatusInt(val) {
     else if (val === 5) return 'Ready for Test'
     else if (val === 6) return 'In Test'
     else if (val === 7) return 'Ready for Release'
+    else if (val === 8) return 'Done'
     else return ''
 }
 
@@ -116,5 +122,6 @@ function convertToTransition(val) {
     else if (val === 'Ready for Test') return 191
     else if (val === 'In Test') return 91
     else if (val === 'Ready for Release') return 101
+    else if (val === 'Done') return 41
     else return 0
 }
