@@ -4,7 +4,7 @@
 // @description  Find out-of-sync main Jira tickets and make it easy to work out where they should go
 // @copyright    2021, floodmeadows (https://openuserjs.org/users/floodmeadows)
 // @license      MIT
-// @version      0.3.2
+// @version      0.3.3
 // @include      https://jira.tools.tax.service.gov.uk/secure/RapidBoard.jspa?rapidView=3310*
 // @grant        none
 // ==/UserScript==
@@ -24,10 +24,11 @@ function checkStatuses() {
     headers.append("Authorization", "Basic YW5keS52YXVnaGFuOnY2OFZwV0BhOWVCMQ==");
     headers.append("Cookie", "JSESSIONID=327B1D9832748F6B0918A869EEE63342; atlassian.xsrf.token=BBUF-FXW5-CMMJ-CU1I_09e04099e52aabd2b1b65538cd270f56650b2fc9_lin");
 
-    const baseUrl = 'https://jira.tools.tax.service.gov.uk/rest/api/latest/search'
+    const baseApiUrl = 'https://jira.tools.tax.service.gov.uk/rest/api/latest/search'
+    const baseStoryUrl = 'https://jira.tools.tax.service.gov.uk/browse/'
     const jql = 'project = "HMRC Mobile App" AND type not in (Project) AND status in ("Ready for Dev", Blocked, "In Dev", "In PR", "Ready for Test", "In Test", "Ready for Release") AND labels = main AND labels != "do-not-sync" order by key'
     const fields = 'key,summary,subtasks,status'
-    const url = baseUrl + '?jql=' + encodeURI(jql) + '&fields=' + fields
+    const url = baseApiUrl + '?jql=' + encodeURI(jql) + '&fields=' + fields
     console.log(url)
 
     var requestOptions = {
@@ -49,13 +50,13 @@ function checkStatuses() {
                         subtaskStatuses.push(subtaskStatus)
                     }
                     if (subtaskStatuses.length == 0) {
-                        oddballs.push(main.key)
+                        oddballs.push(baseStoryUrl + main.key)
                         console.log(main.key + ' is labelled "main" but has no sub-tasks')
                     } else {
                         const min = Math.min(...subtaskStatuses)
                         if (mainTicketStatus != min) {
                             const targetStatus = convertStatusInt(min)
-                            if (targetStatus == '') oddballs.push(main.key)
+                            if (targetStatus == '') oddballs.push(baseStoryUrl + main.key)
                             console.log(main.key + ' needs to be moved to ' + targetStatus)
                             updateStatus(main.key, targetStatus)
                         } else {
